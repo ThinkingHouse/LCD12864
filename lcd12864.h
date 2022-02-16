@@ -1,12 +1,33 @@
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#ifndef LCD12864_H
+#define LCD12864_H
 
 #include <string> 
 
-void ResetLCD();
+class Display
+{
+    private:
+        DigitalOut* m_lcdLed;
+        DigitalOut* m_cs;
+        SPI* m_spi;
 
-void printLCD(string str);
+        uint8_t printStr[4][16];
 
-void clearDisplay();
+        void instructionRegsiter(uint8_t inst);
+        void dataRegister(uint8_t data);
+
+    public:
+        Display(PinName t_sck, PinName t_miso, PinName t_mosi, PinName t_cs, PinName t_led);
+        void reset();
+
+        void addStr(uint8_t t_x, uint8_t t_y, char* t_str);
+
+        void print();
+
+        void clear();
+
+        void setLed(bool t_value);
+};
+
+
 
 #endif
