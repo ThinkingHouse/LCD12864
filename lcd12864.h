@@ -10,6 +10,8 @@ class Display
         DigitalOut* m_cs;
         SPI* m_spi;
 
+        uint8_t printStr[4][16];
+
         void instructionRegsiter(uint8_t inst);
         void dataRegister(uint8_t data);
 
@@ -17,9 +19,13 @@ class Display
         Display(PinName t_sck, PinName t_miso, PinName t_mosi, PinName t_cs, PinName t_led);
         void reset();
 
-        void print(string str);
+        void addStr(uint8_t t_x, uint8_t t_y, char* t_str);
+
+        void print();
 
         void clear();
+
+        void setLed(bool t_value);
 };
 
 

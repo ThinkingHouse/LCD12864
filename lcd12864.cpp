@@ -1,6 +1,6 @@
 #include "mbed.h"
 #include "lcd12864.h"
-
+#include <string.h>
 /*
   ST7920 12864ZB LCD module via the clock synchronized serial interface.
  
@@ -93,15 +93,41 @@ void Display::reset()
     // RS RW DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
     //  0  0   0   0   0   0   0   1 I/D   S
     instructionRegsiter(0x06);
-
-    *m_lcdLed = 1;
 }
 
-void Display::print(string str)
+void Display::addStr(uint8_t t_x, uint8_t t_y, char* t_str)
 {
-    for (size_t i = 0; i < str.size(); i++) 
+    if (t_x > 3 || t_y > 16)
     {
-        dataRegister(str.c_str()[i]);
+        return;
+    }
+
+    for(int i = 0; i < 16; i++)
+    {
+        printStr[t_x][i] = t_str[i];
+    }
+}
+
+void Display::print()
+{
+    for (size_t i = 0; i < 16; i++) 
+    {
+        dataRegister(printStr[0][i]);
+    }
+
+    for (size_t i = 0; i < 16; i++) 
+    {
+        dataRegister(printStr[2][i]);
+    }
+
+    for (size_t i = 0; i < 16; i++) 
+    {
+        dataRegister(printStr[1][i]);
+    }
+
+    for (size_t i = 0; i < 16; i++) 
+    {
+        dataRegister(printStr[3][i]);
     }
 }
 
@@ -109,4 +135,9 @@ void Display::clear()
 {
     instructionRegsiter(0x01); // Display Clear, AC = 0      
     instructionRegsiter(0x80); 
+}
+
+void Display::setLed(bool t_value)
+{
+    *m_lcdLed = t_value;
 }
