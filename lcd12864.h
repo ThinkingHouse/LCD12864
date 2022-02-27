@@ -19,7 +19,7 @@ class Display
         Display(PinName t_sck, PinName t_miso, PinName t_mosi, PinName t_cs, PinName t_led);
         void reset();
 
-        void addStr(uint8_t t_x, uint8_t t_y, char* t_str);
+        void addStr(uint8_t t_x, uint8_t t_y, string t_str);
 
         void print();
 

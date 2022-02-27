@@ -49,7 +49,7 @@ void Display::instructionRegsiter(uint8_t inst)
     // According to table "Instruction Set 1: (RE=0: Basic Instruction)" on p.10
     if (inst == 0x01) 
     {
-        wait_ms(1.6);
+        wait_ms(1.6f);
     } 
     else 
     {
@@ -95,16 +95,25 @@ void Display::reset()
     instructionRegsiter(0x06);
 }
 
-void Display::addStr(uint8_t t_x, uint8_t t_y, char* t_str)
+void Display::addStr(uint8_t t_x, uint8_t t_y, string t_str)
 {
     if (t_x > 3 || t_y > 16)
     {
         return;
     }
 
-    for(int i = 0; i < 16; i++)
+    for(int i = 0, j = 0; i < 16; i++)
     {
-        printStr[t_x][i] = t_str[i];
+        if (i < t_y || j == t_str.length())
+        {
+            printStr[t_x][i] = ' ';
+        }
+        else
+        {
+            printStr[t_x][i] = t_str.c_str()[j];
+            j++;
+        }
+        
     }
 }
 
